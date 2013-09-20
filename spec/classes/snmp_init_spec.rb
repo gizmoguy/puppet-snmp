@@ -60,17 +60,13 @@ describe 'snmp', :type => 'class' do
         # TODO add more contents for File[snmpd.conf]
         it 'should contain File[snmpd.conf] with expected contents' do
           verify_contents(subject, 'snmpd.conf', [
-            'agentaddress udp:127.0.0.1:161',
-            '#rocommunity public 127.0.0.1',
-            'com2sec notConfigUser  default       public',
-            'group   notConfigGroup v1            notConfigUser',
-            'group   notConfigGroup v2c           notConfigUser',
+            'agentAddress udp:127.0.0.1:161',
             'view    systemview    included   .1.3.6.1.2.1.1',
             'view    systemview    included   .1.3.6.1.2.1.25.1.1',
-            'access  notConfigGroup ""      any       noauth    exact  systemview none  none',
-            'syslocation Unknown',
-            'syscontact Unknown',
-            'sysservices 72',
+            'rocommunity public 127.0.0.1',
+            'sysLocation Unknown',
+            'sysContact Unknown',
+            'sysServices 72',
           ])
         end
         it { should contain_file('snmpd.sysconfig').with(
@@ -173,17 +169,13 @@ describe 'snmp', :type => 'class' do
         # TODO add more contents for File[snmpd.conf]
         it 'should contain File[snmpd.conf] with expected contents' do
           verify_contents(subject, 'snmpd.conf', [
-            'agentaddress udp:127.0.0.1:161',
-            '#rocommunity public 127.0.0.1',
-            'com2sec notConfigUser  default       public',
-            'group   notConfigGroup v1            notConfigUser',
-            'group   notConfigGroup v2c           notConfigUser',
+            'agentAddress udp:127.0.0.1:161',
             'view    systemview    included   .1.3.6.1.2.1.1',
             'view    systemview    included   .1.3.6.1.2.1.25.1.1',
-            'access  notConfigGroup ""      any       noauth    exact  systemview none  none',
-            'syslocation Unknown',
-            'syscontact Unknown',
-            'sysservices 72',
+            'rocommunity public 127.0.0.1',
+            'sysLocation Unknown',
+            'sysContact Unknown',
+            'sysServices 72',
           ])
         end
         it { should contain_file('snmpd.sysconfig').with(
@@ -273,17 +265,13 @@ describe 'snmp', :type => 'class' do
         # TODO add more contents for File[snmpd.conf]
         it 'should contain File[snmpd.conf] with expected contents' do
           verify_contents(subject, 'snmpd.conf', [
-            'agentaddress udp:127.0.0.1:161',
-            '#rocommunity public 127.0.0.1',
-            'com2sec notConfigUser  default       public',
-            'group   notConfigGroup v1            notConfigUser',
-            'group   notConfigGroup v2c           notConfigUser',
+            'agentAddress udp:127.0.0.1:161',
             'view    systemview    included   .1.3.6.1.2.1.1',
             'view    systemview    included   .1.3.6.1.2.1.25.1.1',
-            'access  notConfigGroup ""      any       noauth    exact  systemview none  none',
-            'syslocation Unknown',
-            'syscontact Unknown',
-            'sysservices 72',
+            'rocommunity public 127.0.0.1',
+            'sysLocation Unknown',
+            'sysContact Unknown',
+            'sysServices 72',
           ])
         end
         it { should contain_file('snmpd.sysconfig').with(
@@ -482,9 +470,9 @@ describe 'snmp', :type => 'class' do
 
     describe 'agentaddress => [ "1.2.3.4", "8.6.7.5:222" ]' do
       let(:params) {{ :agentaddress => ['1.2.3.4','8.6.7.5:222'] }}
-      it 'should contain File[snmpd.conf] with contents "agentaddress 1.2.3.4,8.6.7.5:222"' do
+      it 'should contain File[snmpd.conf] with contents "agentAddress 1.2.3.4,8.6.7.5:222"' do
         verify_contents(subject, 'snmpd.conf', [
-          'agentaddress 1.2.3.4,8.6.7.5:222',
+          'agentAddress 1.2.3.4,8.6.7.5:222',
         ])
       end
     end
