@@ -1,5 +1,4 @@
-###
-### File managed by Puppet
-###
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
+
 # snmptrapd command line options
 OPTIONS="<%= @snmptrapd_options %>"

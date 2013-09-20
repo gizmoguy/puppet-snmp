@@ -1,6 +1,5 @@
-###
-### File managed by Puppet
-###
+<%= ERB.new(File.read(File.expand_path("_header.erb",File.dirname(file)))).result(binding) -%>
+
 ## Path:        System/Net-SNMP
 ## Description: Log level of the snmp server.
 ## Type:        string(!,a,c,e,w,n,i,d,0,1,2,3,4,5,6,7)
