@@ -55,19 +55,19 @@
 define snmp::snmpv3_user (
   $authpass,
   $authtype = 'SHA',
-  $privpass = '',
+  $privpass = undef,
   $privtype = 'AES',
   $daemon   = 'snmpd'
 ) {
   # Validate our regular expressions
-  $Aoptions = [ '^SHA$', '^MD5$' ]
-  validate_re($authtype, $Aoptions, '$authtype must be either SHA or MD5.')
-  $Poptions = [ '^AES$', '^DES$' ]
-  validate_re($privtype, $Poptions, '$privtype must be either AES or DES.')
-  $Doptions = [ '^snmpd$', '^snmptrapd$' ]
-  validate_re($daemon, $Doptions, '$daemon must be either snmpd or snmptrapd.')
+  $hash_options = [ '^SHA$', '^MD5$' ]
+  validate_re($authtype, $hash_options, '$authtype must be either SHA or MD5.')
+  $enc_options = [ '^AES$', '^DES$' ]
+  validate_re($privtype, $enc_options, '$privtype must be either AES or DES.')
+  $daemon_options = [ '^snmpd$', '^snmptrapd$' ]
+  validate_re($daemon, $daemon_options, '$daemon must be either snmpd or snmptrapd.')
 
-  include snmp
+  include ::snmp
 
   if ($daemon == 'snmptrapd') and ($::osfamily != 'Debian') {
     $service_name   = 'snmptrapd'
@@ -85,7 +85,7 @@ define snmp::snmpv3_user (
   exec { "create-snmpv3-user-${title}":
     path    => '/bin:/sbin:/usr/bin:/usr/sbin',
     # TODO: Add "rwuser ${title}" (or rouser) to /etc/snmp/${daemon}.conf
-    command => "service ${service_name} stop ; echo \"${cmd}\" >>${snmp::params::var_net_snmp}/${daemon}.conf && touch ${snmp::params::var_net_snmp}/${title}-${daemon}",
+    command => "service ${service_name} stop ; sleep 5 ; echo \"${cmd}\" >>${snmp::params::var_net_snmp}/${daemon}.conf && touch ${snmp::params::var_net_snmp}/${title}-${daemon}",
     creates => "${snmp::params::var_net_snmp}/${title}-${daemon}",
     user    => 'root',
     require => [ Package['snmpd'], File['var-net-snmp'], ],

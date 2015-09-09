@@ -23,6 +23,7 @@ describe 'snmp::client', :type => 'class' do
   debianish = ['Debian']
   #debianish = ['Debian', 'Ubuntu']
   suseish = ['Suse']
+  freebsdish = ['FreeBSD']
 
   context 'on a supported osfamily, default parameters' do
     redhatish.each do |os|
@@ -93,6 +94,30 @@ describe 'snmp::client', :type => 'class' do
         )}
       end
     end
+
+    freebsdish.each do |os|
+      describe "for osfamily FreeBSD, operatingsystem #{os}" do
+        let(:params) {{}}
+        let :facts do {
+          :osfamily               => 'FreeBSD',
+          :operatingsystem        => os,
+          :operatingsystemrelease => '9.2'
+        }
+        end
+        it { should contain_package('snmp-client').with(
+          :ensure => 'present',
+          :name   => 'net-mgmt/net-snmp'
+        )}
+        it { should_not contain_file('snmp.conf').with(
+          :ensure  => 'present',
+          :mode    => '0755',
+          :owner   => 'root',
+          :group   => 'wheel',
+          :path    => '/usr/local/etc/snmp/snmp.conf',
+          :require => nil
+        )}
+      end
+    end
   end
 
   context 'on a supported osfamily, custom parameters' do
@@ -137,7 +162,7 @@ describe 'snmp::client', :type => 'class' do
       let(:params) {{ :snmp_config => [ 'defVersion 2c', 'defCommunity public' ] }}
       it { should contain_file('snmp.conf') }
       it 'should contain File[snmp.conf] with contents "defVersion 2c" and "defCommunity public"' do
-        verify_contents(subject, 'snmp.conf', [
+        verify_contents(catalogue, 'snmp.conf', [
           'defVersion 2c',
           'defCommunity public',
         ])
